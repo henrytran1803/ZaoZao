@@ -291,6 +291,20 @@
                 display: none;
             }
         }
+
+        .upload-section {
+            margin-top: 40px;
+        }
+        .preview-canvas {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            border: 3px solid #8b4513;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(139,69,19,0.08);
+            background: #fff8f0;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -444,7 +458,7 @@
         </div>
 
         <!-- Khu vực upload ảnh -->
-        <div class="upload-section" style="margin-top:40px;">
+        <div class="upload-section">
             <h2 class="section-title">Tạo ảnh cùng tớ</h2>
             <input type="file" id="image-upload" accept="image/*" multiple style="margin-bottom: 20px;">
             <div id="preview-list" style="display: flex; flex-wrap: wrap; gap: 24px;"></div>
@@ -553,7 +567,7 @@
                                 previewDiv.style.flexDirection = 'column';
                                 previewDiv.style.alignItems = 'center';
                                 previewDiv.style.gap = '8px';
-                                previewDiv.innerHTML = `<canvas width="${canvas.width}" height="${canvas.height}"></canvas>`;
+                                previewDiv.innerHTML = `<canvas width="${canvas.width}" height="${canvas.height}" class="preview-canvas"></canvas>`;
                                 previewDiv.querySelector('canvas').getContext('2d').drawImage(canvas, 0, 0);
                                 // Nút download
                                 const downloadBtn = document.createElement('a');
