@@ -442,6 +442,13 @@
                 📍 Địa chỉ: 147 Trần Hưng Đạo, Thị trấn Phước An, Huyện Krông Pắc, Tỉnh Đắk Lắk
             </div>
         </div>
+
+        <!-- Khu vực upload ảnh -->
+        <div class="upload-section" style="margin-top:40px;">
+            <h2 class="section-title">Tạo ảnh cùng tớ</h2>
+            <input type="file" id="image-upload" accept="image/*" multiple style="margin-bottom: 20px;">
+            <div id="preview-list" style="display: flex; flex-wrap: wrap; gap: 24px;"></div>
+        </div>
     </div>
 
     <script>
@@ -503,6 +510,116 @@
 
         // Initialize
         calculateTotal();
+
+        // Đảm bảo script chạy sau khi DOM sẵn sàng
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logo path
+            const logoPath = 'png/logoNoBG.png';
+            // Logo cá có viền (dùng lại ảnh cá, thêm viền bằng canvas)
+            const fishImages = ['png/1.png', 'png/2.png', 'png/3.png'];
+
+            // Xử lý upload và preview
+            const uploadInput = document.getElementById('image-upload');
+            if (!uploadInput) {
+                console.error('Không tìm thấy input upload!');
+                return;
+            }
+            uploadInput.addEventListener('change', handleFiles);
+
+            function handleFiles(event) {
+                const files = event.target.files;
+                const previewList = document.getElementById('preview-list');
+                previewList.innerHTML = '';
+                if (!files || files.length === 0) {
+                    previewList.innerHTML = '<div style="color:red">Không có ảnh nào được chọn!</div>';
+                    return;
+                }
+                Array.from(files).forEach((file, idx) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = new Image();
+                        img.onload = function() {
+                            // Tạo canvas để vẽ ảnh và logo
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            ctx.drawImage(img, 0, 0);
+                            // Chèn logo vào góc dưới bên phải (hoặc trên trái)
+                            addLogoToCanvas(ctx, img.width, img.height, file.name, () => {
+                                // Hiển thị preview
+                                const previewDiv = document.createElement('div');
+                                previewDiv.style.display = 'flex';
+                                previewDiv.style.flexDirection = 'column';
+                                previewDiv.style.alignItems = 'center';
+                                previewDiv.style.gap = '8px';
+                                previewDiv.innerHTML = `<canvas width="${canvas.width}" height="${canvas.height}"></canvas>`;
+                                previewDiv.querySelector('canvas').getContext('2d').drawImage(canvas, 0, 0);
+                                // Nút download
+                                const downloadBtn = document.createElement('a');
+                                downloadBtn.textContent = 'Download';
+                                downloadBtn.download = 'zaozao_' + file.name;
+                                downloadBtn.href = canvas.toDataURL('image/png');
+                                downloadBtn.style = 'margin-top: 8px; background: #d2691e; color: white; padding: 6px 16px; border-radius: 8px; text-decoration: none; font-weight: bold;';
+                                previewDiv.appendChild(downloadBtn);
+                                previewList.appendChild(previewDiv);
+                            });
+                        };
+                        img.onerror = function() {
+                            previewList.innerHTML += `<div style='color:red'>Không thể đọc ảnh: ${file.name}</div>`;
+                        }
+                        img.src = e.target.result;
+                    };
+                    reader.onerror = function() {
+                        previewList.innerHTML += `<div style='color:red'>Lỗi đọc file: ${file.name}</div>`;
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // Hàm chèn logo vào canvas
+            function addLogoToCanvas(ctx, imgW, imgH, fileName, cb) {
+                const logoImg = new Image();
+                logoImg.src = logoPath;
+                logoImg.onload = function() {
+                    // Kích thước logo: 20% chiều rộng ảnh, tối đa 120px
+                    const logoW = Math.min(imgW * 0.2, 120);
+                    const logoH = logoW * (logoImg.height / logoImg.width);
+                    // Vị trí: góc dưới bên phải, cách mép 12px
+                    const x = imgW - logoW - 12;
+                    const y = imgH - logoH - 12;
+                    // Nếu là ảnh cá, chèn logo có viền vào góc trên bên trái
+                    if (fishImages.some(fish => fileName.includes(fish.split('/').pop()))) {
+                        // Vẽ logo có viền trắng
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.arc(logoW/2+12, logoH/2+12, logoW/2+6, 0, 2*Math.PI);
+                        ctx.fillStyle = 'white';
+                        ctx.globalAlpha = 0.7;
+                        ctx.fill();
+                        ctx.globalAlpha = 1;
+                        ctx.drawImage(logoImg, 12, 12, logoW, logoH);
+                        ctx.restore();
+                    } else {
+                        // Ảnh thường: chèn logo vào góc dưới phải
+                        ctx.save();
+                        // Viền trắng mờ
+                        ctx.beginPath();
+                        ctx.arc(x+logoW/2, y+logoH/2, logoW/2+6, 0, 2*Math.PI);
+                        ctx.fillStyle = 'white';
+                        ctx.globalAlpha = 0.7;
+                        ctx.fill();
+                        ctx.globalAlpha = 1;
+                        ctx.drawImage(logoImg, x, y, logoW, logoH);
+                        ctx.restore();
+                    }
+                    cb();
+                };
+                logoImg.onerror = function() {
+                    alert('Không thể tải logo!');
+                }
+            }
+        });
     </script>
 </body>
 </html>
