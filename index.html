@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAO ZAO - Ngọt Trên Từng Miếng Bánh</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f4e6d3 0%, #e8d5c4 50%, #dcc5b0 100%);
+            min-height: 100vh;
+            color: #8b4513;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: linear-gradient(145deg, #f9f2e7, #e8d5c4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.2);
+            margin-bottom: 30px;
+            border: 3px dashed #d2691e;
+            position: relative;
+        }
+
+        .header::before {
+            content: '✨';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 24px;
+        }
+
+        .header::after {
+            content: '✨';
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .title {
+            font-size: 48px;
+            font-weight: bold;
+            color: #8b4513;
+            text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.3);
+            margin-bottom: 10px;
+            letter-spacing: 8px;
+        }
+
+        .slogan {
+            font-size: 18px;
+            color: #a0522d;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        .calculator {
+            background: linear-gradient(145deg, #f9f2e7, #e8d5c4);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.2);
+            border: 3px dashed #d2691e;
+        }
+
+        .menu-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #8b4513;
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::before,
+        .section-title::after {
+            position: absolute;
+            top: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .section-title::before {
+            left: -40px;
+            content: '';
+            background: url('png/1.png') no-repeat center;
+            background-size: contain;
+        }
+
+        .section-title::after {
+            right: -40px;
+            content: '';
+            background: url('png/2.png') no-repeat center;
+            background-size: contain;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .menu-item {
+            background: rgba(255, 248, 240, 0.8);
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #deb887;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.2);
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #8b4513;
+            font-size: 16px;
+        }
+
+        .item-price {
+            color: #d2691e;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            background: #d2691e;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #8b4513;
+            transform: scale(1.1);
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: 2px solid #deb887;
+            border-radius: 8px;
+            padding: 5px;
+            font-size: 16px;
+            color: #8b4513;
+        }
+
+        .special-item {
+            position: relative;
+        }
+
+        .special-item::before {
+            content: '🔥';
+            position: absolute;
+            left: -10px;
+            top: -5px;
+            font-size: 20px;
+        }
+
+        .total-section {
+            margin-top: 30px;
+            text-align: center;
+            background: linear-gradient(145deg, #deb887, #d2691e);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+        }
+
+        .total-amount {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .promotion {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .contact {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #8b4513;
+            font-weight: bold;
+        }
+
+        .fish-decoration {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            opacity: 0.4;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .fish-decoration img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .fish-1 { top: 20%; left: 10%; animation-delay: 0s; }
+        .fish-2 { top: 60%; right: 10%; animation-delay: 2s; }
+        .fish-3 { bottom: 20%; left: 15%; animation-delay: 4s; }
+
+        @media (max-width: 600px) {
+            .title {
+                font-size: 36px;
+                letter-spacing: 4px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title::before,
+            .section-title::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fish-decoration fish-1"><img src="png/1.png" alt="Bánh cá 1"></div>
+    <div class="fish-decoration fish-2"><img src="png/2.png" alt="Bánh cá 2"></div>
+    <div class="fish-decoration fish-3"><img src="png/3.png" alt="Bánh cá 3"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="png/logoNoBG.png" alt="ZAO ZAO Logo">
+            </div>
+            <h1 class="title">ZAO ZAO</h1>
+            <p class="slogan">NGỌT TRÊN TỪNG MIẾNG BÁNH</p>
+        </div>
+
+        <div class="calculator">
+            <div class="menu-section">
+                <h2 class="section-title">Các loại nhân</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <span class="item-name">Nhân mặn</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity('nhan-man', -1)">-</button>
+                            <input type="number" class="quantity-input" id="nhan-man" value="0" min="0" onchange="calculateTotal()">
+                            <button class="quantity-btn" onclick="updateQuantity('nhan-man', 1)">+</button>
+                            <span class="item-price">6k</span>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <span class="item-name">Xúc xích</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity('xuc-xich', -1)">-</button>
+                            <input type="number" class="quantity-input" id="xuc-xich" value="0" min="0" onchange="calculateTotal()">
+                            <button class="quantity-btn" onclick="updateQuantity('xuc-xich', 1)">+</button>
+                            <span class="item-price">6k</span>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <span class="item-name">Dăm bông</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity('dam-bong', -1)">-</button>
+                            <input type="number" class="quantity-input" id="dam-bong" value="0" min="0" onchange="calculateTotal()">
+                            <button class="quantity-btn" onclick="updateQuantity('dam-bong', 1)">+</button>
+                            <span class="item-price">6k</span>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <span class="item-name">Thập cẩm</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity('thap-cam', -1)">-</button>
+                            <input type="number" class="quantity-input" id="thap-cam" value="0" min="0" onchange="calculateTotal()">
+                            <button class="quantity-btn" onclick="updateQuantity('thap-cam', 1)">+</button>
+                            <span class="item-price">8k</span>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item special-item">
+                        <div class="item-info">
+                            <span class="item-name">Phô mai kéo sợi</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity('pho-mai', -1)">-</button>
+                            <input type="number" class="quantity-input" id="pho-mai" value="0" min="0" onchange="calculateTotal()">
+                            <button class="quantity-btn" onclick="updateQuantity('pho-mai', 1)">+</button>
+                            <span class="item-price">8k</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <h2 class="section-title">Nhân ngọt</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <span class="item-name">Khoai môn</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity('khoai-mon', -1)">-</button>
+                            <input type="number" class="quantity-input" id="khoai-mon" value="0" min="0" onchange="calculateTotal()">
+                            <button class="quantity-btn" onclick="updateQuantity('khoai-mon', 1)">+</button>
+                            <span class="item-price">6k</span>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <span class="item-name">Socola</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity('socola', -1)">-</button>
+                            <input type="number" class="quantity-input" id="socola" value="0" min="0" onchange="calculateTotal()">
+                            <button class="quantity-btn" onclick="updateQuantity('socola', 1)">+</button>
+                            <span class="item-price">6k</span>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <span class="item-name">Báp</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity('bap', -1)">-</button>
+                            <input type="number" class="quantity-input" id="bap" value="0" min="0" onchange="calculateTotal()">
+                            <button class="quantity-btn" onclick="updateQuantity('bap', 1)">+</button>
+                            <span class="item-price">6k</span>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item special-item">
+                        <div class="item-info">
+                            <span class="item-name">Đậu đỏ</span>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity('dau-do', -1)">-</button>
+                            <input type="number" class="quantity-input" id="dau-do" value="0" min="0" onchange="calculateTotal()">
+                            <button class="quantity-btn" onclick="updateQuantity('dau-do', 1)">+</button>
+                            <span class="item-price">7k</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="promotion">
+                🎉 MUA 10 TẶNG 1 BÁNH BẮT KÌ 🎉<br>
+                <small>*(không áp dụng nhân thập cẩm)</small>
+            </div>
+
+            <div class="total-section">
+                <div class="total-amount">Tổng tiền: <span id="total">0</span>k</div>
+                <div>Số lượng: <span id="quantity">0</span> cái</div>
+                <div id="promotion-text" style="margin-top: 10px; font-size: 14px;"></div>
+            </div>
+
+            <div class="contact">
+                📞 ĐT: 0362.715.616<br>
+                📍 Địa chỉ: 147 Trần Hưng Đạo, Thị trấn Phước An, Huyện Krông Pắc, Tỉnh Đắk Lắk
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const prices = {
+            'nhan-man': 6,
+            'xuc-xich': 6,
+            'dam-bong': 6,
+            'thap-cam': 8,
+            'pho-mai': 8,
+            'khoai-mon': 6,
+            'socola': 6,
+            'bap': 6,
+            'dau-do': 7
+        };
+
+        function updateQuantity(itemId, change) {
+            const input = document.getElementById(itemId);
+            const currentValue = parseInt(input.value) || 0;
+            const newValue = Math.max(0, currentValue + change);
+            input.value = newValue;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            let quantity = 0;
+            let thapCamCount = 0;
+
+            for (const itemId in prices) {
+                const input = document.getElementById(itemId);
+                const itemQuantity = parseInt(input.value) || 0;
+                quantity += itemQuantity;
+                total += itemQuantity * prices[itemId];
+                
+                if (itemId === 'thap-cam' || itemId === 'pho-mai') {
+                    thapCamCount += itemQuantity;
+                }
+            }
+
+            // Áp dụng khuyến mãi: mua 10 tặng 1 (không áp dụng cho thập cẩm)
+            const eligibleForPromotion = quantity - thapCamCount;
+            const freeItems = Math.floor(eligibleForPromotion / 10);
+            
+            document.getElementById('total').textContent = total.toLocaleString();
+            document.getElementById('quantity').textContent = quantity;
+            
+            const promotionText = document.getElementById('promotion-text');
+            if (freeItems > 0) {
+                promotionText.textContent = `🎁 Bạn được tặng ${freeItems} bánh!`;
+                promotionText.style.color = '#ff6b6b';
+            } else if (eligibleForPromotion >= 5) {
+                const remaining = 10 - (eligibleForPromotion % 10);
+                promotionText.textContent = `Mua thêm ${remaining} bánh để được tặng 1 bánh!`;
+                promotionText.style.color = '#ffa500';
+            } else {
+                promotionText.textContent = '';
+            }
+        }
+
+        // Initialize
+        calculateTotal();
+    </script>
+</body>
+</html>
